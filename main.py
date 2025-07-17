@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, S
 
 import re
 
-train_dataset, test_dataset = load_dataset("pieetie/pubmed-abstract-summary", split=["train"]).train_test_split(0.2)
+dataset = load_dataset("pieetie/pubmed-abstract-summary")["train"].train_test_split(test_size=0.2)
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 
 def clean_text(text):
@@ -23,8 +23,8 @@ def tokenize_closure(tokenizer):
     
     return tokenize
 
-train_dataset = train_dataset.map(tokenize_closure(tokenizer), batched=True, remove_columns=train_dataset.column_names)
-test_dataset = test_dataset.map(tokenize_closure(tokenizer), batched=True, remove_columns=test_dataset.column_names)
+train_dataset = dataset["train"].map(tokenize_closure(tokenizer), batched=True, remove_columns=dataset["train"].column_names)
+test_dataset = dataset["test"].map(tokenize_closure(tokenizer), batched=True, remove_columns=dataset["test"].column_names)
 
 config = LoraConfig(
     r=16,
