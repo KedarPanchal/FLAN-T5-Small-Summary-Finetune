@@ -3,28 +3,27 @@ from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 
 import re
+import random
 
 dataset = load_dataset("pieetie/pubmed-abstract-summary")["train"].train_test_split(test_size=0.2)
+prefixes = ["Summarize: ", "Summarize the following: ", "Give a brief summary: ", "Write a short summary of the following text: ", "Summarize the following text: "]
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 
 def clean_text(text):
     return re.sub(r"<[^<]+>", "", text)
 
-def tokenize_closure(tokenizer):
-    def tokenize(data):
-        abstracts = [clean_text(abstract).strip() for abstract in data["abstract"]]
-        summaries = [clean_text(summary) for summary in data["summary"]]
+def tokenize(data):
+    abstracts = [random.choice(prefixes) + clean_text(abstract).strip() for abstract in data["abstract"]]
+    summaries = [clean_text(summary) for summary in data["summary"]]
 
-        model_inputs = tokenizer(abstracts, padding="max_length", truncation=True, max_length=512)
-        labels = tokenizer(summaries, padding="max_length", truncation=True, max_length=128)
+    model_inputs = tokenizer(abstracts, padding="max_length", truncation=True, max_length=512)
+    labels = tokenizer(summaries, padding="max_length", truncation=True, max_length=128)
 
-        model_inputs["labels"] = labels["input_ids"]
-        return model_inputs
-    
-    return tokenize
+    model_inputs["labels"] = labels["input_ids"]
+    return model_inputs
 
-train_dataset = dataset["train"].map(tokenize_closure(tokenizer), batched=True, remove_columns=dataset["train"].column_names)
-test_dataset = dataset["test"].map(tokenize_closure(tokenizer), batched=True, remove_columns=dataset["test"].column_names)
+train_dataset = dataset["train"].map(tokenize(tokenizer), batched=True, remove_columns=dataset["train"].column_names)
+test_dataset = dataset["test"].map(tokenize(tokenizer), batched=True, remove_columns=dataset["test"].column_names)
 
 config = LoraConfig(
     r=16,
