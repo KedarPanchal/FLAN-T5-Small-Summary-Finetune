@@ -22,8 +22,8 @@ def tokenize(data):
     model_inputs["labels"] = labels["input_ids"]
     return model_inputs
 
-train_dataset = dataset["train"].map(tokenize(tokenizer), batched=True, remove_columns=dataset["train"].column_names)
-test_dataset = dataset["test"].map(tokenize(tokenizer), batched=True, remove_columns=dataset["test"].column_names)
+train_dataset = dataset["train"].map(tokenize, batched=True, remove_columns=dataset["train"].column_names)
+test_dataset = dataset["test"].map(tokenize, batched=True, remove_columns=dataset["test"].column_names)
 
 config = LoraConfig(
     r=16,
