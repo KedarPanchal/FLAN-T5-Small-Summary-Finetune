@@ -4,7 +4,7 @@ from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, S
 
 import re
 
-train_dataset, test_dataset = load_dataset("pieetie/pubmed-abstract-summary", split=["train", "test"])
+train_dataset, test_dataset = load_dataset("pieetie/pubmed-abstract-summary", split=["train"]).train_test_split(0.2)
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
 
 def clean_text(text):
