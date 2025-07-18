@@ -14,7 +14,7 @@ def clean_text(text):
 
 def tokenize(data):
     abstracts = [random.choice(prefixes) + clean_text(abstract).strip() for abstract in data["abstract"]]
-    summaries = [clean_text(summary) for summary in data["summary"]]
+    summaries = [clean_text(summary).strip() for summary in data["summary"]]
 
     model_inputs = tokenizer(abstracts, padding="max_length", truncation=True, max_length=512)
     labels = tokenizer(summaries, padding="max_length", truncation=True, max_length=128)
@@ -63,5 +63,5 @@ trainer = Seq2SeqTrainer(
 )
 
 trainer.train()
-model.merge_and_unload()
+model = model.merge_and_unload()
 model.save_pretrained("flan-t5-small-qa")
