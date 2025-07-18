@@ -30,7 +30,7 @@ This model is a fine-tuned `flan-t5-small` transformer trained to summarize text
 | Parameter      | Value |
 | :------------: | :---: |
 | Rank           | 16    |
-| $`\alpha`$     | 32    |
+| Alpha          | 32    |
 | Dropout        | 0.05  |
 | Bias           | none  |
 | Target Modules | q, v  |
