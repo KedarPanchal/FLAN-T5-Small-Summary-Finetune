@@ -72,4 +72,4 @@ trainer = Seq2SeqTrainer(
 
 trainer.train()
 model = model.merge_and_unload()
-model.save_pretrained("flan-t5-small-qa")
+model.save_pretrained("flan-t5-small-summary")
