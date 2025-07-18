@@ -22,7 +22,7 @@ This model is a fine-tuned `flan-t5-small` transformer trained to summarize text
 **pieetie/pubmed-abstract-summary**
 * 4,331 biomedical research abstracts and their one-sentence summaries from the American National Library of Medicine.
 * Summaries contain the key findings, methods, and significance of the research.
-* Entries were duplicated, and the duplicated entries' abstracts had their sentences shuffled around.
+* Entries were duplicated, and the duplicated entries' abstracts had their sentences shuffled around. Any HTML tags present were removed.
 
 ## Training Configuration
 
@@ -52,11 +52,14 @@ This model is a fine-tuned `flan-t5-small` transformer trained to summarize text
 | Validation Loss | ~1.4674     |
 | Training Time   | ~1.2918 hrs |
 
-## Hardware
+### Hardware
 **M4 Macbook Pro**
 * 16 GB Unified RAM
 * 10-core CPU
 * 10-core GPU
+
+### GitHub Repository
+The GitHub repository containing the training code can be found [here](https://github.com/KedarPanchal/FLAN-T5-Small-Summary-Finetune).
 
 ## Example Inference
 ```python
