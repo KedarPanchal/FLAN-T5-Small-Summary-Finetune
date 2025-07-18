@@ -54,11 +54,12 @@ collator = DataCollatorForSeq2Seq(
 training_args = Seq2SeqTrainingArguments(
     output_dir="./results",
     num_train_epochs=5,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=16,
     eval_strategy="epoch",
+    logging_steps=100,
     label_names=["labels"],
     remove_unused_columns=False,
-    learning_rate=1e-3
+    learning_rate=1e-3,
 )
 
 trainer = Seq2SeqTrainer(
@@ -66,7 +67,7 @@ trainer = Seq2SeqTrainer(
     args=training_args,
     train_dataset=train_dataset,
     eval_dataset=test_dataset,
-    data_collator=collator
+    data_collator=collator,
 )
 
 trainer.train()
