@@ -2,19 +2,26 @@ from datasets import load_dataset
 from peft import LoraConfig, TaskType, get_peft_model
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM, Seq2SeqTrainer, Seq2SeqTrainingArguments, DataCollatorForSeq2Seq
 
+import nltk
 import re
 import random
 
 dataset = load_dataset("pieetie/pubmed-abstract-summary")["train"].train_test_split(test_size=0.2)
 prefixes = ["Summarize: ", "Summarize the following: ", "Give a brief summary: ", "Write a short summary of the following text: ", "Summarize the following text: "]
 tokenizer = AutoTokenizer.from_pretrained("google/flan-t5-small")
+nltk.download("punkt_tab")
 
 def clean_text(text):
     return re.sub(r"<[^<]+>", "", text)
 
+def shuffle_sentences(text):
+    sentences = nltk.sent_tokenize(text)
+    random.shuffle(sentences)
+    return " ".join(sentences)
+
 def tokenize(data):
-    abstracts = [random.choice(prefixes) + clean_text(abstract).strip() for abstract in data["abstract"]]
-    summaries = [clean_text(summary).strip() for summary in data["summary"]]
+    abstracts = [clean_text(abstract).strip() for abstract in data["abstract"]] + [shuffle_sentences(clean_text(abstract).strip()) for abstract in data["abstract"]]
+    summaries = [clean_text(summary).strip() for summary in data["summary"]] * 2
 
     model_inputs = tokenizer(abstracts, padding="max_length", truncation=True, max_length=512)
     labels = tokenizer(summaries, padding="max_length", truncation=True, max_length=128)
