@@ -22,7 +22,7 @@ This model is a fine-tuned `flan-t5-small` transformer trained to summarize text
 **pieetie/pubmed-abstract-summary**
 * 4,331 biomedical research abstracts and their one-sentence summaries from the American National Library of Medicine.
 * Summaries contain the key findings, methods, and significance of the research.
-* Entries were duplicated and the duplicated entries' abstracts had their sentences shuffled around.
+* Entries were duplicated, and the duplicated entries' abstracts had their sentences shuffled around.
 
 ## Training Configuration
 
