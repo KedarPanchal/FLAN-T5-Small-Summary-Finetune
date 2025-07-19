@@ -10,7 +10,7 @@ pipeline_tag: summarization
 library_name: transformers
 ---
 # FLAN-T5-Small Fine-Tuned for Summarization
-This model is a fine-tuned `flan-t5-small` transformer trained to summarize text when provided the instructions to do so. The model was trained on abstracts from publically available research papers and their summaries.
+This model is a fine-tuned `flan-t5-small` transformer trained to summarize text when provided the instructions to do so. The model was trained on abstracts from publicly available research papers and their summaries.
 
 ## Model Overview
 * **Base Model:** `flan-t5-small`
